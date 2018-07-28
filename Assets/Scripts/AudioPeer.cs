@@ -5,6 +5,7 @@ using UnityEngine;
 [RequireComponent (typeof(AudioSource))]
 public class AudioPeer : MonoBehaviour {
     AudioSource _audiosource;
+    public float[] _samplesSee = new float[512];
     public static float[] _samples = new float[512];// takes all the hertz in the total spectrum of the audio playing, 20000 samples, and put´s them into 512 samples
     public static float[] _freqBand = new float[8];
     public static float[] _bandBuffer = new float[8];
@@ -23,11 +24,11 @@ public class AudioPeer : MonoBehaviour {
 
     void Update()
     {
-        GetSpectrumAudioSource();
-        MakeFrequencyBands();
-        Bandbuffer();
-        CreateAudioBands();
-        GetAmplitude();
+        GetSpectrumAudioSource();//소스 분리
+        MakeFrequencyBands();//8개 HZ범위 지정
+        Bandbuffer();//부드럽게 전환
+        CreateAudioBands();//위에서 범위 지정한거에 따라서 값
+        GetAmplitude();//하나로 합한거  -->_Amplitude
 
     }
 
@@ -62,6 +63,7 @@ public class AudioPeer : MonoBehaviour {
     void GetSpectrumAudioSource()
     {
         _audiosource.GetSpectrumData(_samples, 0, FFTWindow.Blackman);// takes audio sources spectrum data and puts them into samples
+        _audiosource.GetSpectrumData(_samplesSee, 0, FFTWindow.Blackman);
     }
     void Bandbuffer()//buffer to the value which creates a smooth down when the amplitude is lower than its previous value
     {
