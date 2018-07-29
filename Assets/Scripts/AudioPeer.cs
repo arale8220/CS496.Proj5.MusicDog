@@ -1,6 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
+using UnityEngine.UI;
+
 
 [RequireComponent (typeof(AudioSource))]
 public class AudioPeer : MonoBehaviour {
@@ -14,13 +17,29 @@ public class AudioPeer : MonoBehaviour {
     float[] _freqBandHighest = new float[8];
     public static float[] _audioBand = new float[8];
     public static float[] _audioBandBuffer = new float[8];
-    public static float _Amplitude, _AmplitudeBuffer;
-    float _AmplitudeHighest=0.01f;
+    public static float _Amplitude, _AmplitudeBuffer; //Amplitude 는 가장 큰 소리에 대한 현재 소리의 상대값을 의미함. 
+    float _AmplitudeHighest=8f;
+
+
+    public TextMeshProUGUI soundText_max;
+    public TextMeshProUGUI soundText;
+
+    private Slider BackgroundSound;
+    private Slider PlayerSound;
+
+    
+
+    
 
     // Use this for initialization
     void Start () {
         _audiosource = GetComponent<AudioSource>();
-	}
+        BackgroundSound = GameObject.Find("BackgroundSound").GetComponent<Slider>();
+        PlayerSound = GameObject.Find("PlayerSound").GetComponent<Slider>();
+
+
+
+    }
 
     void Update()
     {
@@ -29,6 +48,20 @@ public class AudioPeer : MonoBehaviour {
         Bandbuffer();//부드럽게 전환
         CreateAudioBands();//위에서 범위 지정한거에 따라서 값
         GetAmplitude();//하나로 합한거  -->_Amplitude
+        soundText_max.text = _AmplitudeHighest.ToString();//(_Amplitude*100).ToString("f1") ;
+        soundText.text = _Amplitude.ToString();
+
+        BackgroundSound.maxValue = 1;
+        BackgroundSound.value = _Amplitude;
+        
+
+
+
+    }
+    void UpdatingSoundBar(Slider slider)
+    {
+        slider.maxValue = 1;
+        slider.value = _Amplitude;
 
     }
 
@@ -42,9 +75,13 @@ public class AudioPeer : MonoBehaviour {
             _CurrentAmpBuf += _audioBandBuffer[i];
         }
 
-        if (_CurrentAmp > _AmplitudeHighest) _AmplitudeHighest = _CurrentAmp;
+        //if (_CurrentAmp > _AmplitudeHighest) _AmplitudeHighest = _CurrentAmp;
         _Amplitude = _CurrentAmp / _AmplitudeHighest;
         _AmplitudeBuffer = _CurrentAmpBuf / _AmplitudeHighest;
+        if (_Amplitude> 0.5){
+            Debug.Log("big sound");
+
+        }
     }
 
     void CreateAudioBands()
