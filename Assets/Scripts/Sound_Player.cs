@@ -4,7 +4,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 
-public class Sound : MonoBehaviour
+public class Sound_Player : MonoBehaviour
 {
 
     AudioSource[] audioSource;
@@ -20,29 +20,31 @@ public class Sound : MonoBehaviour
     private float[] clipSampleData;
 
     public TextMeshProUGUI soundText_max;
-    
+    public TextMeshProUGUI soundText;
 
     private Slider BackgroundSound;
-    
+    private Slider PlayerSound;
 
-    bool isOver5= false;
+    bool isOver5 = false;
 
     // Use this for initialization
     void Awake()
     {
 
 
-        
+
+
         clipSampleData = new float[sampleDataLength];
         audioSource = GetComponents<AudioSource>();
-        BackgroundSound =  GameObject.Find("BackgroundSound").GetComponent<Slider>();
-        soundText_max = GameObject.Find("Sound_max").GetComponent<TextMeshProUGUI>();
-
+        PlayerSound = GameObject.Find("PlayerSound").GetComponent<Slider>();
+        BackgroundSound = GameObject.Find("BackgroundSound").GetComponent<Slider>();
+        soundText = GameObject.Find("sound").GetComponent<TextMeshProUGUI>();
         audioIndexs = new int[audioSource.Length];
         for (int i = 0; i < audioIndexs.Length; i++)
         {
             audioIndexs[i] = i;
         }
+        PlayerSound.value = 0.0F;
 
 
     }
@@ -50,9 +52,49 @@ public class Sound : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Space) && (!audioSource[0].isPlaying))
+        {
+            audioSource[0].Play();
+
+        }
+
+        else if ((Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.LeftArrow)) && (!audioSource[1].isPlaying))
+        {
+            audioSource[1].Play();
+
+
+        }
+        else if ((Input.GetKeyUp(KeyCode.UpArrow) || Input.GetKeyUp(KeyCode.DownArrow) || Input.GetKeyUp(KeyCode.RightArrow) || Input.GetKeyUp(KeyCode.LeftArrow)) && (audioSource[1].isPlaying))
+        {
+            audioSource[1].Stop();
+        }
+
+
+        if (audioSource[0].isPlaying)
+        {
+            PlayerSound.value = 0.4F;
+        }
+        else if (audioSource[1].isPlaying)
+        {
+            PlayerSound.value = 0.1F;
+        }
+
+        else
+        {
+            PlayerSound.value -= 0.005F;
+        }
+
+        if (PlayerSound.value > BackgroundSound.value)
+        {
+            Debug.Log("Be careful!");
+        }
+
         
 
-        currentUpdateTime += Time.deltaTime;
+
+
+
+        //currentUpdateTime += Time.deltaTime;
 
         /*
         if (currentUpdateTime >= updateStep) //update for each 0.1 second
@@ -67,42 +109,40 @@ public class Sound : MonoBehaviour
             clipLoudness /= sampleDataLength; //clipLoudness is what you are looking for
         }
         */
-        if ((Time.time > 5)&& !isOver5) //5초가 지날 때 새로운 music 을 turn on 
-        {
-            audioSource[1].Play();
-            isOver5 = true;
-        }
-        
+
+        /*
         if (currentUpdateTime >= updateStep)
         {
             clipLoudness = 0f;
             AddingSoundsEffect(audioIndexs);
             clipLoudness /= sampleDataLength;
         }
+        */
 
 
 
 
 
+        /*
+        soundText.text = clipLoudness.ToString();
+        PlayerSound.value = clipLoudness;
+        */
 
-        soundText_max.text = clipLoudness.ToString();
-        BackgroundSound.value = clipLoudness;
-        
-       
+
 
     }
     void AddingSoundsEffect(int[] ChooseAudios)
     {//timesamples 는 오디오가 시작된 것을 기준으로 함. 즉, 여러개의 오디오가 있으면 시작한 타이밍에 따라 여러 소리가 겹침. 
-        for (int i=0; i < ChooseAudios.Length; i++)
+        for (int i = 0; i < ChooseAudios.Length; i++)
         {
             audioSource[i].clip.GetData(clipSampleData, audioSource[i].timeSamples); //I read 1024 samples, which is about 80 ms on a 44khz stereo clip, beginning at the current sample position of the clip.
-            
+
             foreach (var sample in clipSampleData)
             {
                 clipLoudness += Mathf.Abs(sample);
             }
         }
-        
+
 
     }
 

@@ -65,7 +65,7 @@ public class CharacterMovement : MonoBehaviour {
 
 
 
-        if (Input.GetKeyDown(KeyCode.Space)&&isGrounded)
+        if (Input.GetKeyDown(KeyCode.Space))
         {
             this.GetComponent<Rigidbody>().AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
             isGrounded = false;
