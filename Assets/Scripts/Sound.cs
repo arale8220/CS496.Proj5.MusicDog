@@ -67,11 +67,7 @@ public class Sound : MonoBehaviour
             clipLoudness /= sampleDataLength; //clipLoudness is what you are looking for
         }
         */
-        if ((Time.time > 5)&& !isOver5) //5초가 지날 때 새로운 music 을 turn on 
-        {
-            audioSource[1].Play();
-            isOver5 = true;
-        }
+        
         
         if (currentUpdateTime >= updateStep)
         {
@@ -95,12 +91,16 @@ public class Sound : MonoBehaviour
     {//timesamples 는 오디오가 시작된 것을 기준으로 함. 즉, 여러개의 오디오가 있으면 시작한 타이밍에 따라 여러 소리가 겹침. 
         for (int i=0; i < ChooseAudios.Length; i++)
         {
-            audioSource[i].clip.GetData(clipSampleData, audioSource[i].timeSamples); //I read 1024 samples, which is about 80 ms on a 44khz stereo clip, beginning at the current sample position of the clip.
-            
-            foreach (var sample in clipSampleData)
+            if (!audioSource[i].mute)
             {
-                clipLoudness += Mathf.Abs(sample);
+                audioSource[i].clip.GetData(clipSampleData, audioSource[i].timeSamples); //I read 1024 samples, which is about 80 ms on a 44khz stereo clip, beginning at the current sample position of the clip.
+
+                foreach (var sample in clipSampleData)
+                {
+                    clipLoudness += Mathf.Abs(sample);
+                }
             }
+            
         }
         
 

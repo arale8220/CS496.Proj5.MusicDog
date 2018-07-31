@@ -93,7 +93,6 @@ public class Sound_Player : MonoBehaviour
 
 
 
-
         //currentUpdateTime += Time.deltaTime;
 
         /*
@@ -133,8 +132,9 @@ public class Sound_Player : MonoBehaviour
     }
     void AddingSoundsEffect(int[] ChooseAudios)
     {//timesamples 는 오디오가 시작된 것을 기준으로 함. 즉, 여러개의 오디오가 있으면 시작한 타이밍에 따라 여러 소리가 겹침. 
-        for (int i = 0; i < ChooseAudios.Length; i++)
+        for (int i = 2; i < ChooseAudios.Length; i++)
         {
+            if(!audioSource[i].mute)//만약 오디오가 mute 가 아니면 
             audioSource[i].clip.GetData(clipSampleData, audioSource[i].timeSamples); //I read 1024 samples, which is about 80 ms on a 44khz stereo clip, beginning at the current sample position of the clip.
 
             foreach (var sample in clipSampleData)
