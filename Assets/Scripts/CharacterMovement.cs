@@ -15,6 +15,7 @@ public class CharacterMovement : MonoBehaviour {
     public Camera cam;
     public GameObject AudioP;
 
+    public Button clear;
     
 
 
@@ -27,6 +28,7 @@ public class CharacterMovement : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+        clear.gameObject.SetActive(false);
         controller = GetComponent<CharacterController>();
         CurrentScore =  GameObject.Find("Score").GetComponent<TextMeshProUGUI>();
         this.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotationZ | RigidbodyConstraints.FreezeRotationX;
@@ -42,19 +44,19 @@ public class CharacterMovement : MonoBehaviour {
     void MoveCtrl()
     {
 
-        if (Input.GetKey(KeyCode.W))
+        if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.W))
         {
             //this.transform.localEulerAngles = new Vector3(0, 0, 0);
             this.transform.Translate(Vector3.forward * speed * Time.deltaTime);
             this.GetComponent<Animation>().Play("run");
         }
-        if (Input.GetKey(KeyCode.S))
+        if (Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.S))
         {
             //this.transform.localEulerAngles = new Vector3(0, 180, 0);
             this.transform.Translate(Vector3.back * speed * Time.deltaTime);
             this.GetComponent<Animation>().Play("run");
         }
-        if (Input.GetKey(KeyCode.D))
+        if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D))
         {
             //this.transform.localEulerAngles = new Vector3(0, 90, 0);
             this.transform.Translate(Vector3.right * speed * Time.deltaTime);
@@ -62,7 +64,7 @@ public class CharacterMovement : MonoBehaviour {
             this.GetComponent<Animation>().Play("run");
         }
 
-        if (Input.GetKey(KeyCode.A))
+        if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A))
         {
             //this.transform.localEulerAngles = new Vector3(0, -90, 0);
             this.transform.Translate(Vector3.left * speed * Time.deltaTime);
@@ -99,14 +101,18 @@ public class CharacterMovement : MonoBehaviour {
             if (CurrentBones > 6)
             {
                 GameObject.Find("Score").SetActive(false);
-                GameObject.Find("Finished").transform.Find("ftxt").gameObject.SetActive(true);
-                GameObject.Find("Finished").transform.Find("fbtn").gameObject.SetActive(true);
+                GameObject.Find("Canvas").transform.Find("ftxt").gameObject.SetActive(true);
+                clear.gameObject.SetActive(true);
             }
             Destroy(collision.gameObject);
         }
         else if (collision.gameObject.tag == "CollItem")
         {
             AudioP.GetComponents<AudioSource>()[2].Play();
+        }
+        else if (collision.gameObject.tag == "Doll")
+        {
+            AudioP.GetComponents<AudioSource>()[3].Play();
         }
     }
 

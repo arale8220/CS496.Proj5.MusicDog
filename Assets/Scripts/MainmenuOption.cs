@@ -49,7 +49,13 @@ public class MainmenuOption : MonoBehaviour {
     public void GoToMapSelectAndEnableMap2()
     {
         isStageCleared[0] = true;
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene(0);
+
+    }
+
+    public void GotoMain()
+    {
+        SceneManager.LoadScene(0);
 
     }
 

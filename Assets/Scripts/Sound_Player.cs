@@ -27,7 +27,6 @@ public class Sound_Player : MonoBehaviour
 
     bool isOver5 = false;
 
-    //2018년 8월 1일 추가한 부분
     private Image fadeImage;
 
     public float animTime = 2f;
@@ -36,7 +35,8 @@ public class Sound_Player : MonoBehaviour
     private float time = 0f;
 
     private bool isPlaying = false;
-
+    private bool Over = false;
+    private bool cheat11 = false;
     private Button RestartGame;
 
 
@@ -64,33 +64,38 @@ public class Sound_Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.F12)) cheat11 = !cheat11;
         if (Input.GetKeyDown(KeyCode.Space) && (!audioSource[0].isPlaying))audioSource[0].Play();
-        else if ((Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.A)) && (!audioSource[1].isPlaying))audioSource[1].Play();
-        else if ((Input.GetKeyUp(KeyCode.W) || Input.GetKeyUp(KeyCode.S) || Input.GetKeyUp(KeyCode.D) || Input.GetKeyUp(KeyCode.A)) && (audioSource[1].isPlaying))audioSource[1].Stop();
-        //audiosource[0] : jumpsound
-        //audiosource[0] : walking sound
-        //audiosource[0] : bowl sound
-        if (audioSource[0].isPlaying && audioSource[2].isPlaying)
+        else if ((Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.W)) && (!audioSource[1].isPlaying))audioSource[1].Play();
+        else if ((Input.GetKeyUp(KeyCode.UpArrow) || Input.GetKeyUp(KeyCode.DownArrow) || Input.GetKeyUp(KeyCode.RightArrow) || Input.GetKeyUp(KeyCode.LeftArrow) || Input.GetKeyUp(KeyCode.A) || Input.GetKeyUp(KeyCode.S) || Input.GetKeyUp(KeyCode.D) || Input.GetKeyUp(KeyCode.W)) && (audioSource[1].isPlaying))audioSource[1].Stop();
+
+        if (cheat11) PlayerSound.value = 0f;
+        else if (audioSource[0].isPlaying && audioSource[2].isPlaying)
         {
             PlayerSound.value = 0.6F;
-        }else if (audioSource[1].isPlaying && audioSource[2].isPlaying)
+        }
+        else if (audioSource[1].isPlaying && audioSource[2].isPlaying)
         {
             PlayerSound.value = 0.4F;
-        }else if (audioSource[0].isPlaying )
+        }
+        else if (audioSource[0].isPlaying)
         {
             PlayerSound.value = 0.2F;
-        }else if (audioSource[1].isPlaying)
+        }
+        else if (audioSource[1].isPlaying)
         {
             PlayerSound.value = 0.05F;
-        }else
+        }
+        else
         {
-            PlayerSound.value -= 0.05F;
+            PlayerSound.value -= 0.005F;
         }
 
         
 
-        if (PlayerSound.value > BackgroundSound.value)
+        if (PlayerSound.value > BackgroundSound.value && !Over)
         {
+            Over = true;
             Debug.Log("Be careful!");
             startFadeOutAnim();
         }

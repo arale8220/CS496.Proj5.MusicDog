@@ -1,0 +1,23 @@
+fileFormatVersion: 2
+guid: 201be0e3ecb1e524086d70f6cff13b02
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: JeanSunHo
+  fontNames:
+  - JeanSunHo
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 046ba7dbb867d444fa1e321f9f265a4e, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
