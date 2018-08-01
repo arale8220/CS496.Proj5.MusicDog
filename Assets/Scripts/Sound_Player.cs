@@ -27,6 +27,19 @@ public class Sound_Player : MonoBehaviour
 
     bool isOver5 = false;
 
+    //2018년 8월 1일 추가한 부분
+    private Image fadeImage;
+
+    public float animTime = 2f;
+    private float start = 0f;
+    private float end = 1f;
+    private float time = 0f;
+
+    private bool isPlaying = false;
+
+    private Button RestartGame;
+
+
     // Use this for initialization
     void Awake()
     {
@@ -39,6 +52,11 @@ public class Sound_Player : MonoBehaviour
         PlayerSound = GameObject.Find("PlayerSound").GetComponent<Slider>();
         BackgroundSound = GameObject.Find("BackgroundSound").GetComponent<Slider>();
         PlayerSound.value = 0.0F;
+
+        fadeImage = GameObject.Find("FadeImage").GetComponent<Image>();
+
+        RestartGame = GameObject.Find("ReviveButton").GetComponent<Button>();
+        RestartGame.gameObject.SetActive(false);
 
 
     }
@@ -72,6 +90,7 @@ public class Sound_Player : MonoBehaviour
         if (PlayerSound.value > BackgroundSound.value)
         {
             Debug.Log("Be careful!");
+            startFadeOutAnim();
         }
 
         
@@ -130,5 +149,71 @@ public class Sound_Player : MonoBehaviour
 
 
     }
+
+    void startFadeOutAnim()
+    {
+        if (isPlaying)
+        {
+            return;
+
+        }
+        StartCoroutine("PlayFadeOut");
+    }
+
+    void startFadeInAnim()
+    {
+        if (isPlaying)
+        {
+            return;
+
+        }
+        StartCoroutine("PlayFadeIn");
+    }
+    IEnumerator PlayFadeOut()
+    {
+        isPlaying = true;
+
+        Color color = fadeImage.color;
+        time = 0f;
+        color.a = Mathf.Lerp(start, end, time);
+
+        while (color.a < 1f)
+        {
+            time += Time.deltaTime / animTime;
+
+            color.a = Mathf.Lerp(start, end, time);
+            fadeImage.color = color;
+            yield return null;
+        }
+        RestartGame.gameObject.SetActive(true);
+        isPlaying = false;
+
+    }
+
+    IEnumerator PlayFadeIn()
+    {
+        isPlaying = true;
+
+        Color color = fadeImage.color;
+        time = 0f;
+        color.a = Mathf.Lerp(end, start, time);
+
+        while (color.a > 0f)
+        {
+            time += Time.deltaTime / animTime;
+
+            color.a = Mathf.Lerp(end, start, time);
+            fadeImage.color = color;
+            yield return null;
+        }
+        isPlaying = false;
+    }
+    IEnumerable WaitFor1Second()
+    {
+
+        Debug.Log("hahahaha");
+        yield return null;
+    }
+
 
 }
