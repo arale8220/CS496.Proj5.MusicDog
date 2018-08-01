@@ -36,7 +36,6 @@ public class Sound : MonoBehaviour
         clipSampleData = new float[sampleDataLength];
         audioSource = GetComponents<AudioSource>();
         BackgroundSound =  GameObject.Find("BackgroundSound").GetComponent<Slider>();
-        soundText_max = GameObject.Find("Sound_max").GetComponent<TextMeshProUGUI>();
 
         audioIndexs = new int[audioSource.Length];
         for (int i = 0; i < audioIndexs.Length; i++)
@@ -81,7 +80,6 @@ public class Sound : MonoBehaviour
 
 
 
-        soundText_max.text = clipLoudness.ToString();
         BackgroundSound.value = clipLoudness;
         
        

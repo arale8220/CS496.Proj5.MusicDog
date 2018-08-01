@@ -23,6 +23,7 @@ public class ChangeBackGroundMusic : MonoBehaviour {
         if(collision.gameObject.tag == "Player")
         {
             PlayerCollectMusicDisk++;
+            Debug.Log(PlayerCollectMusicDisk);
             BGM.GetComponents<AudioSource>()[PlayerCollectMusicDisk].mute = false;
             
             
