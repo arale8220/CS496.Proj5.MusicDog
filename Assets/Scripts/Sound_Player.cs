@@ -65,24 +65,26 @@ public class Sound_Player : MonoBehaviour
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space) && (!audioSource[0].isPlaying))audioSource[0].Play();
-        else if ((Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.LeftArrow)) && (!audioSource[1].isPlaying))audioSource[1].Play();
-        else if ((Input.GetKeyUp(KeyCode.UpArrow) || Input.GetKeyUp(KeyCode.DownArrow) || Input.GetKeyUp(KeyCode.RightArrow) || Input.GetKeyUp(KeyCode.LeftArrow)) && (audioSource[1].isPlaying))audioSource[1].Stop();
-
+        else if ((Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.A)) && (!audioSource[1].isPlaying))audioSource[1].Play();
+        else if ((Input.GetKeyUp(KeyCode.W) || Input.GetKeyUp(KeyCode.S) || Input.GetKeyUp(KeyCode.D) || Input.GetKeyUp(KeyCode.A)) && (audioSource[1].isPlaying))audioSource[1].Stop();
+        //audiosource[0] : jumpsound
+        //audiosource[0] : walking sound
+        //audiosource[0] : bowl sound
         if (audioSource[0].isPlaying && audioSource[2].isPlaying)
         {
-            PlayerSound.value = 0.7F;
+            PlayerSound.value = 0.6F;
         }else if (audioSource[1].isPlaying && audioSource[2].isPlaying)
         {
-            PlayerSound.value = 0.5F;
+            PlayerSound.value = 0.4F;
         }else if (audioSource[0].isPlaying )
         {
-            PlayerSound.value = 0.4F;
+            PlayerSound.value = 0.2F;
         }else if (audioSource[1].isPlaying)
         {
-            PlayerSound.value = 0.2F;
+            PlayerSound.value = 0.05F;
         }else
         {
-            PlayerSound.value -= 0.005F;
+            PlayerSound.value -= 0.05F;
         }
 
         

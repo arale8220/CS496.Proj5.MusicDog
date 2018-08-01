@@ -42,19 +42,19 @@ public class CharacterMovement : MonoBehaviour {
     void MoveCtrl()
     {
 
-        if (Input.GetKey(KeyCode.UpArrow))
+        if (Input.GetKey(KeyCode.W))
         {
             //this.transform.localEulerAngles = new Vector3(0, 0, 0);
             this.transform.Translate(Vector3.forward * speed * Time.deltaTime);
             this.GetComponent<Animation>().Play("run");
         }
-        if (Input.GetKey(KeyCode.DownArrow))
+        if (Input.GetKey(KeyCode.S))
         {
             //this.transform.localEulerAngles = new Vector3(0, 180, 0);
             this.transform.Translate(Vector3.back * speed * Time.deltaTime);
             this.GetComponent<Animation>().Play("run");
         }
-        if (Input.GetKey(KeyCode.RightArrow))
+        if (Input.GetKey(KeyCode.D))
         {
             //this.transform.localEulerAngles = new Vector3(0, 90, 0);
             this.transform.Translate(Vector3.right * speed * Time.deltaTime);
@@ -62,7 +62,7 @@ public class CharacterMovement : MonoBehaviour {
             this.GetComponent<Animation>().Play("run");
         }
 
-        if (Input.GetKey(KeyCode.LeftArrow))
+        if (Input.GetKey(KeyCode.A))
         {
             //this.transform.localEulerAngles = new Vector3(0, -90, 0);
             this.transform.Translate(Vector3.left * speed * Time.deltaTime);
